@@ -15,7 +15,7 @@ from aiida_submission_controller import FromGroupSubmissionController
 
 DRY_RUN = False
 MAX_CONCURRENT = 10
-PLUGIN_NAME = 'abacus_lcao_v1_tzdp_sg15'
+PLUGIN_NAME = 'abacus_lcao_v1_apns_efficiency'
 CODE_LABEL = 'abacus-3.10lts@cn'  # <-- Change this to the code configured to run ABACUS
 
 
@@ -66,7 +66,7 @@ class EosSubmissionController(FromGroupSubmissionController):
             'structure': structure,
             'generator_inputs': {  # code-agnostic inputs for the relaxation
                 'engines': engines,
-                'protocol': 'verification-PBE-v1-lcao-tzdp-sg15',
+                'protocol': 'verification-PBE-v1-lcao-apns-efficiency',
                 'relax_type': RelaxType.NONE,
                 'electronic_type': ElectronicType.METAL,
                 'spin_type': SpinType.NONE,

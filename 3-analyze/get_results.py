@@ -32,7 +32,7 @@ def extract_from_failed(node):
     streses=[]
     num_atoms = None
     num_attempt_vols = 0
-    for i in node.get_outgoing(link_type=LinkType.CALL_WORK).all():
+    for i in node.base.links.get_outgoing(link_type=LinkType.CALL_WORK).all():
         num_attempt_vols = num_attempt_vols + 1
         if i.node.is_finished_ok:
             if num_atoms is None:
@@ -54,6 +54,7 @@ def extract_from_failed(node):
 
 
 def get_plugin_name():
+    return sys.argv[1]
     file_name = os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
         os.pardir, 'plugin_name.txt'
@@ -77,7 +78,7 @@ PLUGIN_NAME = get_plugin_name()
 
 if __name__ == "__main__":
     try:
-        SET_NAME = sys.argv[1]
+        SET_NAME = sys.argv[2]
     except IndexError:
         print("Pass as parameter the set name, e.g. oxides-verification-PBE-v1 or unaries-verification-PBE-v1")
         sys.exit(1)
@@ -109,8 +110,8 @@ if __name__ == "__main__":
     progress_bar = tqdm.tqdm(wf_nodes)
     for node in progress_bar:
         structure = node.inputs.structure
-        element = structure.extras['element']
-        configuration = structure.extras['configuration']
+        element = structure.base.extras.all['element']
+        configuration = structure.base.extras.all['configuration']
 
         uuid_mapping[f'{element}-{configuration}'] = {
             'structure': structure.uuid,
@@ -141,7 +142,7 @@ if __name__ == "__main__":
         # For successfully finished workflows, collect the data from outputs
         if node.process_state.value == 'finished' and node.exit_status == 0:
             # Extract volumes and energies for this system
-            outputs = node.get_outgoing(link_type=LinkType.RETURN).nested()
+            outputs = node.base.links.get_outgoing(link_type=LinkType.RETURN).nested()
             for index, sub_structure in sorted(outputs['structures'].items()):
                 if num_atoms is None:
                     num_atoms = len(sub_structure.sites)
@@ -152,7 +153,7 @@ if __name__ == "__main__":
                 volumes.append(sub_structure.get_cell_volume())
                 energy_node = outputs['total_energies'][index]
                 energies.append(energy_node.value)
-                parent_workflows_links = energy_node.get_incoming(link_type=LinkType.RETURN).all()
+                parent_workflows_links = energy_node.base.links.get_incoming(link_type=LinkType.RETURN).all()
                 parent_workflows = [
                     triple.node for triple in parent_workflows_links
                     if issubclass(triple.node.process_class, CommonRelaxWorkChain)]
@@ -166,7 +167,7 @@ if __name__ == "__main__":
         # For failed workflows, check if some volumes concluded succesfully, if more than 80% of vol are ok, go on with fit
         elif (node.process_state.value == 'finished' and node.exit_status != 0) or (node.process_state.value == 'excepted'):
             volumes,energies,stresses,num_atoms,num_attempt_vols = extract_from_failed(node)
-            if len(volumes)/float(num_attempt_vols) < 0.8:
+            if num_attempt_vols == 0 or len(volumes)/float(num_attempt_vols) < 0.8:
                 # Not enough volumes, list the material as failed
                 failed_wfs.append({
                     'element': element,
@@ -214,7 +215,7 @@ if __name__ == "__main__":
             bulk_modulus_GPa = bulk_modulus_internal * echarge * 1.0e21
             #1 eV/Angstrom3 = 160.21766208 GPa
             bulk_modulus_ev_ang3 = bulk_modulus_GPa / 160.21766208
-            data_to_print[(structure.extras['element'], structure.extras['configuration'])] = (
+            data_to_print[(structure.base.extras.all['element'], structure.base.extras.all['configuration'])] = (
                 min_volume, E0, bulk_modulus_GPa, bulk_deriv)
             BM_fit_data = {
                 'min_volume': min_volume,

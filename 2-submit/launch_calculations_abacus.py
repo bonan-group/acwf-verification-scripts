@@ -14,9 +14,9 @@ from aiida_common_workflows.plugins import load_workflow_entry_point
 from aiida_submission_controller import FromGroupSubmissionController
 
 DRY_RUN = False
-MAX_CONCURRENT = 10
-PLUGIN_NAME = 'abacus_lcao_v1_sg15'
-CODE_LABEL = 'abacus-3.10lts@cn'  # <-- Change this to the code configured to run ABACUS
+MAX_CONCURRENT = 30
+PLUGIN_NAME = 'abacus_apns'
+CODE_LABEL = 'abacus-3.10lts@catapult'  # <-- Change this to the code configured to run ABACUS
 
 
 class EosSubmissionController(FromGroupSubmissionController):
@@ -57,8 +57,9 @@ class EosSubmissionController(FromGroupSubmissionController):
                         'num_machines': 1,    # <- UPDATE these settings according to your scheduler
                         'tot_num_mpiprocs': 4    # <- UPDATE these settings according to your scheduler
                     },
-                    'max_wallclock_seconds': 3600 * 12,    # <- UPDATE these settings according to your scheduler
-                    'qos': 'urgent',    # <- UPDATE these settings according to your scheduler
+                    'max_wallclock_seconds': 3600 * 3,    # <- UPDATE these settings according to your scheduler
+                    #'qos': 'urgent',    # <- UPDATE these settings according to your scheduler
+                    #'queue_name': 'tyhcnormal'
                 }
             }
 
@@ -66,13 +67,18 @@ class EosSubmissionController(FromGroupSubmissionController):
             'structure': structure,
             'generator_inputs': {  # code-agnostic inputs for the relaxation
                 'engines': engines,
-                'protocol': 'verification-PBE-v1-lcao-dzp-sg15',
+                'protocol': 'verification-PBE-v1-lcao-apns-efficiency',
                 'relax_type': RelaxType.NONE,
                 'electronic_type': ElectronicType.METAL,
                 'spin_type': SpinType.NONE,
             },
             'sub_process_class': sub_process_cls_name,
-            'sub_process' : {}  # optional code-dependent overrides
+            'sub_process' : {
+
+            'base': {'abacus': {'parameters': {'input': {'basis_type': 'pw', 'ks_solver': 'dav_subspace'}}}},
+            'base_final_scf': {'abacus': {'parameters': {'input': {'basis_type': 'pw', 'ks_solver': 'dav_subspace'}}}},
+ 
+}  # optional code-dependent overrides
            }
 
         return inputs, self._process_class

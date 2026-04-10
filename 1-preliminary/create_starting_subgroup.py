@@ -69,10 +69,20 @@ if __name__ == "__main__":
         valid_elements = [a for a in atomic_numbers.keys() if atomic_numbers[a] <= 83]
         for elements in ['Dy', 'Ce', 'Er', 'Eu', 'Gd', 'Ho', 'La', 'Lu', 'Nd', 'Pm', 'Pr', 'Sm', 'Tb', 'Tc', 'Tm', 'Yb' ]:
             valid_elements.remove(elements)
-    elif PLUGIN_NAME == 'abacus_lcao_v1_tzdp':
+    elif PLUGIN_NAME == 'abacus':
         query = orm.QueryBuilder()
         query.append(orm.Node, project="attributes.element", tag='pseudo')
         query.append(orm.Group, filters={'label': 'PseudoDojo/0.4/PBE/SR/standard/upf'}, with_node='pseudo')
+        valid_elements = query.all(flat=True)
+    elif PLUGIN_NAME == 'abacus_c19mk2':
+        query = orm.QueryBuilder()
+        query.append(orm.Node, project="attributes.element", tag='pseudo')
+        query.append(orm.Group, filters={'label': 'CASTEP/C19MK2/PBE/upf'}, with_node='pseudo')
+        valid_elements = query.all(flat=True)
+    elif PLUGIN_NAME == 'abacus_sg15':
+        query = orm.QueryBuilder()
+        query.append(orm.Node, project="attributes.element", tag='pseudo')
+        query.append(orm.Group, filters={'label': 'SG15_V1.0/dzp'}, with_node='pseudo')
         valid_elements = query.all(flat=True)
     elif PLUGIN_NAME == 'abacus_lcao_v1_sg15':
         query = orm.QueryBuilder()
@@ -83,6 +93,26 @@ if __name__ == "__main__":
         query = orm.QueryBuilder()
         query.append(orm.Node, project="attributes.element", tag='pseudo')
         query.append(orm.Group, filters={'label': 'SG15_V1.0/tzdp'}, with_node='pseudo')
+        valid_elements = query.all(flat=True)
+    elif PLUGIN_NAME == 'abacus_lcao_v1_apns_efficiency':
+        query = orm.QueryBuilder()
+        query.append(orm.Node, project="attributes.element", tag='pseudo')
+        query.append(orm.Group, filters={'label': 'apns-efficiency-v1'}, with_node='pseudo')
+        valid_elements = query.all(flat=True)
+    elif PLUGIN_NAME == 'abacus_gbrv':
+        query = orm.QueryBuilder()
+        query.append(orm.Node, project="attributes.element", tag='pseudo')
+        query.append(orm.Group, filters={'label': 'GBRV/1.5/PBE/upf'}, with_node='pseudo')
+        valid_elements = query.all(flat=True)
+    elif PLUGIN_NAME == 'vasp':
+        query = orm.QueryBuilder()
+        query.append(orm.Node, project="attributes.element", tag='pseudo')
+        query.append(orm.Group, filters={'label': 'PBE.54'}, with_node='pseudo')
+        valid_elements = query.all(flat=True)
+    elif PLUGIN_NAME == 'castep_qc5_340':
+        query = orm.QueryBuilder()
+        query.append(orm.Node, project="attributes.element", tag='pseudo')
+        query.append(orm.Group, filters={'label': 'PBE.54'}, with_node='pseudo')  # SAME as VASP
         valid_elements = query.all(flat=True)
     else:
         raise ValueError(f"Unknown plugin name `{PLUGIN_NAME}`!")

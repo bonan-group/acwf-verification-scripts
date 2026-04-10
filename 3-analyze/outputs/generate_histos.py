@@ -16,6 +16,7 @@ import quantities_for_comparison as qc
 X_ZOOM_FACTOR = 1.
 
 def get_plugin_name():
+    return sys.argv[1]
     file_name = os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
         os.pardir, os.pardir, 'plugin_name.txt'
@@ -63,22 +64,22 @@ quantity_for_comparison_map = {
 
 if __name__ == "__main__":
     try:
-        SET_NAME = sys.argv[1]
+        SET_NAME = sys.argv[2]
     except IndexError:
-        print(f"The first argument must be the set name.")
+        print(f"The second argument must be the set name.")
         sys.exit(1)
 
     try:
-        QUANTITY = sys.argv[2]
+        QUANTITY = sys.argv[3]
     except IndexError:
-        print(f"The second argument must be the quantity to use for comparison. Choose among {quantity_for_comparison_map.keys()}")
+        print(f"The third argument must be the quantity to use for comparison. Choose among {quantity_for_comparison_map.keys()}")
         sys.exit(1)
 
     if QUANTITY not in quantity_for_comparison_map.keys():
         print(f"The second argument must be the quantity to use for comparison. Choose among {quantity_for_comparison_map.keys()}")
         sys.exit(1)
 
-    all_args = sys.argv[3:]
+    all_args = sys.argv[4:]
 
     if not all_args:
         print("The plugin's names whose results will be plotted must be listed explicitely as script arguments.")
@@ -113,7 +114,7 @@ if __name__ == "__main__":
             print(f"No data found for the plugin '{compare_with}' (set '{SET_NAME}'): you need the file results-{SET_NAME}-{compare_with}.json.")
             sys.exit(1)
 
-    name_file = f'histo-{QUANTITY}-{SET_NAME}-{PLUGIN_NAME}.pdf'
+    name_file = f'histo-{QUANTITY}-{SET_NAME}-{PLUGIN_NAME}-{compare_with}.pdf'
 
     all_systems = set(reference_plugin_data['eos_data'].keys())
     all_systems = set(reference_plugin_data['BM_fit_data'].keys())

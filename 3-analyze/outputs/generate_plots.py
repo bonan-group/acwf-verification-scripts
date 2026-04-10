@@ -10,6 +10,7 @@ import tqdm
 from quantities_for_comparison import birch_murnaghan, get_volume_scaling_to_formula_unit
 
 def get_plugin_name():
+    return sys.argv[1]
     file_name = os.path.join(
         os.path.dirname(os.path.realpath(__file__)),
         os.pardir, os.pardir, 'plugin_name.txt'
@@ -47,13 +48,13 @@ def get_conf_nice(configuration_string):
 
 if __name__ == "__main__":
     try:
-        SET_NAME = sys.argv[1]
+        SET_NAME = sys.argv[2]
     except IndexError:
         print("Pass as first parameter the set name, e.g. oxides-verification-PBE-v1 or unaries-verification-PBE-v1")
         sys.exit(1)
 
     try:
-        compare_with = sys.argv[2]
+        compare_with = sys.argv[3]
     except IndexError:
         compare_with = None
 

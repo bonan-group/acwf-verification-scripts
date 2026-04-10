@@ -1,16 +1,6 @@
-WARNING! Unable to fit for Cr X2O5
 
 Counter of states: Counter({'finished.0': 432})
 
-Minimum completely off for 10/432
+Minimum completely off for 1/432
 Completely off systems (symbol indicates if the minimum is on the very left or right):
 - Ba XO3 (>)
-- Cr X2O (>)
-- Cr X2O5 (>)
-- Cr XO (>)
-- Cr XO3 (>)
-- Cu X2O (>)
-- Cu X2O3 (>)
-- Cu X2O5 (>)
-- Cu XO (>)
-- Cu XO2 (>)

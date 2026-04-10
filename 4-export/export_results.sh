@@ -1,6 +1,6 @@
 #!/bin/bash
-
-SET_NAME='oxides-verification-PBE-v1'
+set -x
+SET_NAME='unaries-verification-PBE-v1'
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 PLUGIN_NAME=`cat "$SCRIPT_DIR"/../plugin_name.txt 2>/dev/null`

@@ -14,8 +14,8 @@ from aiida_common_workflows.plugins import load_workflow_entry_point
 from aiida_submission_controller import FromGroupSubmissionController
 
 DRY_RUN = False
-MAX_CONCURRENT = 30
-PLUGIN_NAME = 'abacus'
+MAX_CONCURRENT = 15
+PLUGIN_NAME = 'abacus_sg15'
 CODE_LABEL = 'abacus-3.10lts@cn'  # <-- Change this to the code configured to run ABACUS
 
 
@@ -58,6 +58,7 @@ class EosSubmissionController(FromGroupSubmissionController):
                         'tot_num_mpiprocs': 8    # <- UPDATE these settings according to your scheduler
                     },
                     'max_wallclock_seconds': 3600 * 12,    # <- UPDATE these settings according to your scheduler
+                    'account': 'hc',    # <- UPDATE these settings according to your scheduler
                     #'qos': 'urgent',    # <- UPDATE these settings according to your scheduler
                 }
             }
@@ -72,8 +73,14 @@ class EosSubmissionController(FromGroupSubmissionController):
                 'spin_type': SpinType.NONE,
             },
             'sub_process_class': sub_process_cls_name,
-            # 'sub_process' : {  # optional code-dependent overrides
-            #     'base': {
+            'sub_process' : {  # optional code-dependent overrides
+                 'base': {
+                        'pseudo_family': 'SG15_V1.0/dzp',   # Switch to SG15_V1.0/dzp family
+                        'abacus': {
+                             'pseudos': {}
+                         }
+                }
+            }
             #         'pw': {
             #             'settings' : orm.Dict(dict= {
             #                 'cmdline': ['-nk', '32'],
