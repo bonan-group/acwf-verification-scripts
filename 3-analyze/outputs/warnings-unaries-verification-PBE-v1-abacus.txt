@@ -1,15 +1,8 @@
-WARNING! Unable to fit for Cr X/Diamond
-WARNING! High fit residuals: 0.005006840145439376 for Ne X/BCC
-WARNING! High fit residuals: 0.004229438179425293 for Ne X/Diamond
-WARNING! High fit residuals: 0.019738485802537023 for Ne X/FCC
+WARNING! High fit residuals: 0.004804922970062683 for Ne X/BCC
+WARNING! High fit residuals: 0.0033457603129656587 for Ne X/Diamond
+WARNING! High fit residuals: 0.013182283792661549 for Ne X/FCC
 
 Counter of states: Counter({'finished.0': 288})
 
-Minimum completely off for 6/288
+Minimum completely off for 0/288
 Completely off systems (symbol indicates if the minimum is on the very left or right):
-- Cr X/Diamond (>)
-- Cr X/FCC (>)
-- Cu X/BCC (>)
-- Cu X/Diamond (>)
-- Cu X/FCC (>)
-- Cu X/SC (>)

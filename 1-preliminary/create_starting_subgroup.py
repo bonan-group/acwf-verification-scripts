@@ -109,6 +109,11 @@ if __name__ == "__main__":
         query.append(orm.Node, project="attributes.element", tag='pseudo')
         query.append(orm.Group, filters={'label': 'PBE.54'}, with_node='pseudo')
         valid_elements = query.all(flat=True)
+    elif PLUGIN_NAME == 'castep_qc5_340':
+        query = orm.QueryBuilder()
+        query.append(orm.Node, project="attributes.element", tag='pseudo')
+        query.append(orm.Group, filters={'label': 'PBE.54'}, with_node='pseudo')  # SAME as VASP
+        valid_elements = query.all(flat=True)
     else:
         raise ValueError(f"Unknown plugin name `{PLUGIN_NAME}`!")
     #####################################################################################

@@ -138,6 +138,12 @@
             "oxides": "results-oxides-verification-PBE-v1-abacus_lcao_v1_tzdp.json",
             "unaries": "results-unaries-verification-PBE-v1-abacus_lcao_v1_tzdp.json",
             "short_label": "abacus_tzdp"
+       },
+       "abacus@NAO|APNS-efficiency":{
+            "oxides": "results-oxides-verification-PBE-v1-abacus_lcao_v1_apns_efficiency.json",
+            "unaries": "results-unaries-verification-PBE-v1-abacus_lcao_v1_apns_efficiency.json",
+            "short_label": "abacus_apns_efficiency"
        }
+ 
     }
 }    
